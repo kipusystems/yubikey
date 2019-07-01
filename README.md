@@ -54,6 +54,26 @@ If you're using Bundler, add the gem to Gemfile.
 
 Then run bundle install.
 
+
+### TODO
+The certificates expiration will produce an error:
+```
+SSL_connect returned=1 errno=0 state=SSLv3 read server certificate B: certificate verify failed
+```
+
+Pull the latest certificates from the servers using:
+```
+echo QUIT | \
+openssl s_client -showcerts -connect  api.yubico.com:443 | \
+awk '/-----BEGIN CERTIFICATE-----/ {p=1}; p; /-----END CERTIFICATE-----/ {p=0}' > lib/cert/chain.pem
+```
+
+This will update the certicate chain file: 
+```lib/cert/chain.pem```
+
+At this point, you should be back in business.
+
+
 ## Copyright
 
 ### Ruby library
